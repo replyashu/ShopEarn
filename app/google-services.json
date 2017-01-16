@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "580120688305",
+    "firebase_url": "https://shop-and-earn.firebaseio.com",
+    "project_id": "shop-and-earn",
+    "storage_bucket": "shop-and-earn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580120688305:android:f03c701ff84c3ef1",
+        "android_client_info": {
+          "package_name": "com.shopearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580120688305-e9s1afit1kmt5aui48m1bn9njadrbakl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "580120688305-e31vnmt2qu2t4od1gdle1635rruel3va.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx9JsVVRzVHu2l4pc7bMKagt7Xy7czE24"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-79686944-4"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

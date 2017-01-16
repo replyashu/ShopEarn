@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+   <android.support.v7.widget.CardView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_margin="10dp">
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/linearEdit"
+           android:orientation="vertical">
+           <EditText
+               android:id="@+id/editName"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:hint="Enter Name"/>
+
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:inputType="textEmailAddress"
+               android:hint="E Mail"
+               android:id="@+id/editEmail"/>
+
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:inputType="phone"
+               android:layout_margin="5dp"
+               android:hint="Phone Number"
+               android:id="@+id/editPhone"
+               />
+
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:hint="Address"
+               android:id="@+id/editAddress"
+               />
+
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:inputType="number"
+               android:hint="Bank Account Number"
+               android:id="@+id/editAccountNum"/>
+
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:hint="Bank Name"
+               android:id="@+id/editBankName"/>
+
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:hint="Bank Branch"
+               android:id="@+id/editBankBranch"
+               />
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:hint="Bank IFSC"
+               android:id="@+id/editBankIFSC"/>
+
+           <Button
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="5dp"
+               android:text="Save Details"
+               android:id="@+id/btnSave"/>
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/linearText"
+           android:visibility="gone"
+           android:orientation="vertical">
+           <TextView
+               android:id="@+id/txtName"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="Name"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="E Mail"
+               android:id="@+id/txtEmail"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="Phone Number"
+               android:id="@+id/txtPhone"
+               />
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="Phone Number"
+               android:id="@+id/txtAddress"
+               />
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="Phone Number"
+               android:id="@+id/txtAccountNum"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="Phone Number"
+               android:id="@+id/txtBankName"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="Phone Number"
+               android:id="@+id/txtBankBranch"
+               />
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:layout_margin="10dp"
+               android:text="Phone Number"
+               android:id="@+id/txtBankIFSC"/>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:orientation="horizontal">
+               <Button
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:gravity="center"
+                   android:layout_margin="10dp"
+                   android:visibility="gone"
+                   android:text="Share Details"
+                   android:id="@+id/btnShare"/>
+               <Button
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:gravity="center"
+                   android:layout_margin="10dp"
+                   android:text="Edit Details"
+                   android:id="@+id/btnEdit"/>
+           </LinearLayout>
+
+
+       </LinearLayout>
+
+   </android.support.v7.widget.CardView>
+</RelativeLayout>
