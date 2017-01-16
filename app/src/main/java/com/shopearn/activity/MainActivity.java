@@ -41,6 +41,7 @@ import com.shopearn.adapter.ShopAdapter;
 import com.shopearn.fragment.AboutFragment;
 import com.shopearn.fragment.EarnFragment;
 import com.shopearn.fragment.ProfileFragment;
+import com.shopearn.fragment.SettingFragment;
 import com.shopearn.fragment.ShopFragment;
 import com.shopearn.global.AppController;
 import com.shopearn.model.User;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
 
     private String urlOfApp = "https://play.google.com/store/apps/" +
-            "details?id=filter.ashu.smsfilter";
+            "details?id=com.shopearn";
     private String latestVersion;
     private String currentVersion;
     private Dialog dialog;
@@ -403,8 +404,18 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
 
-//            case R.id.settings:
-//                break;
+            case R.id.settings:
+                if (!(mFragment instanceof SettingFragment)) {
+                    fragment = new SettingFragment();
+                    fm = this.getSupportFragmentManager();
+                    ft = fm.beginTransaction();
+                    if(fm.getBackStackEntryCount() >= 0) {
+                        fm.popBackStack();
+                    }
+                    ft.replace(R.id.content_main, fragment).addToBackStack("leaderboard");
+                    ft.commit();
+                }
+                break;
 
             case R.id.about:
                 if (!(mFragment instanceof AboutFragment)) {
@@ -494,8 +505,13 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if (!(currentVersion.equalsIgnoreCase(latestVersion) || latestVersion == null))
-                showUpdateDialog();
+            if (latestVersion != null)
+                if (!currentVersion.equalsIgnoreCase(latestVersion)) {
+                    if (!isFinishing()) {
+                        showUpdateDialog();
+                    }
+
+                }
 //            else {
 ////                String[] PERMISSIONS = {Manifest.permission.READ_CONTACTS,
 ////                        Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS,

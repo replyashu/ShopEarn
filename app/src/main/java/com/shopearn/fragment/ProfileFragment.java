@@ -118,6 +118,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             linearText.setVisibility(View.GONE);
         }
         else{
+            setValuesToTextViews();
             linearText.setVisibility(View.VISIBLE);
             linearEdit.setVisibility(View.GONE);
         }

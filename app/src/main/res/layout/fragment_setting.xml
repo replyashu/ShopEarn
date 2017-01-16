@@ -3,4 +3,24 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:text="Points: 0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="50dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:id="@+id/txtPoints" />
+
+    <TextView
+        android:text="Keep Viewing this place, once your order is shipped, we would update points here."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:textSize="22sp"
+        android:gravity="center"
+
+        android:id="@+id/textView4" />
 </LinearLayout>

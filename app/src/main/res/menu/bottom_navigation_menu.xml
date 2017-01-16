@@ -19,13 +19,12 @@
         android:icon="@drawable/profile"
         android:title="PROFILE"
         app:showAsAction="ifRoom" />
-    <!--<item-->
-        <!--android:id="@+id/settings"-->
-        <!--android:enabled="false"-->
-
-        <!--android:icon="@drawable/setting"-->
-        <!--android:title="SETTING"-->
-        <!--app:showAsAction="ifRoom" />-->
+    <item
+        android:id="@+id/settings"
+        android:enabled="true"
+        android:icon="@drawable/leaderboard"
+        android:title="POINTS"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/about"
         android:enabled="true"
