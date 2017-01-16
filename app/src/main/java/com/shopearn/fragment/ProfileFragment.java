@@ -104,6 +104,24 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         sp = getActivity().getSharedPreferences("user", 0);
         editor = sp.edit();
 
+        name = sp.getString("name", "none");
+        email = sp.getString("email", "none");
+        phone = sp.getString("phone", "none");
+        address = sp.getString("address", "none");
+        account = sp.getString("account", "none");
+        bank = sp.getString("bank", "none");
+        branch = sp.getString("branch", "none");
+        ifsc = sp.getString("ifsc", "none");
+
+        if(bank.equalsIgnoreCase("none")){
+            linearEdit.setVisibility(View.VISIBLE);
+            linearText.setVisibility(View.GONE);
+        }
+        else{
+            linearText.setVisibility(View.VISIBLE);
+            linearEdit.setVisibility(View.GONE);
+        }
+
         btnSave.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
         btnShare.setOnClickListener(this);

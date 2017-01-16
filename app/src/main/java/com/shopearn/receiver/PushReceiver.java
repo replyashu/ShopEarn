@@ -64,6 +64,7 @@ public class PushReceiver extends BroadcastReceiver {
                 content = container.getString("url");
                 pushText = container.getString("text");
 
+                Log.d("title" ,"titl" + title);
                 sendNotification(context, title, content);
 
                 if (!containerHolder.getStatus().isSuccess()) {

@@ -3,10 +3,14 @@ package com.shopearn.activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -50,6 +54,9 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,6 +99,12 @@ public class MainActivity extends AppCompatActivity
     private int ACCOUNT_PERMISSION_CODE = 23;
 
     private GoogleApiClient mGoogleApiClient;
+
+    private String urlOfApp = "https://play.google.com/store/apps/" +
+            "details?id=filter.ashu.smsfilter";
+    private String latestVersion;
+    private String currentVersion;
+    private Dialog dialog;
 
 
     @Override
@@ -141,7 +154,7 @@ public class MainActivity extends AppCompatActivity
         branch = sp.getString("branch", "none");
         ifsc = sp.getString("ifsc", "none");
 
-
+        Log.d("emailread", sp.getString("emailread", "guest"));
         if (!isReadAccountAllowed()) {
             getAccountPermission();
         } else {
@@ -153,30 +166,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        database = FirebaseDatabase.getInstance();
+        PackageManager pm = this.getPackageManager();
+        PackageInfo pInfo = null;
 
+        try {
+            pInfo = pm.getPackageInfo(this.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        currentVersion = pInfo.versionName;
 
-        // Get a reference to the todoItems child items it the database
-        myRef = database.getReference("users/");
-
-        String id = AppController.getInstance().getAndroidId();
-
-        User user = new User();
-
-        user.setAndroidId(AppController.getInstance().getAndroidId());
-        user.setEmail(email);
-//        user.setName("none");
-//        user.setPhone("none");
-//        user.setAccount("none");
-//        user.setBank("none");
-//        user.setBranch("none");
-//        user.setIfsc("none");
-//        user.setReferCode("none");
-//        user.setReferrefCode("none");
-//        user.setSelfPoints("none");
-//        user.setPointsRefer("none");
-
-        myRef.child(id).setValue(user);
+        new GetCurrentVersion().execute();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
@@ -251,12 +252,41 @@ public class MainActivity extends AppCompatActivity
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 String user = getUserName();
 
-                editor.putString("emailread", user);
+                editor.putString("emailread", user).commit();
+
+                sendValueToFirebase();
                 }else{
                 //Displaying another toast if permission is not granted
                 Toast.makeText(this,"Oops you just denied the permission",Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void sendValueToFirebase(){
+        database = FirebaseDatabase.getInstance();
+
+        email = sp.getString("emailread", "guest");
+        // Get a reference to the todoItems child items it the database
+        myRef = database.getReference("users/");
+
+        String id = AppController.getInstance().getAndroidId();
+
+        User user = new User();
+
+        user.setAndroidId(AppController.getInstance().getAndroidId());
+        user.setEmail(email);
+//        user.setName("none");
+//        user.setPhone("none");
+//        user.setAccount("none");
+//        user.setBank("none");
+//        user.setBranch("none");
+//        user.setIfsc("none");
+//        user.setReferCode("none");
+//        user.setReferrefCode("none");
+//        user.setSelfPoints("none");
+//        user.setPointsRefer("none");
+
+        myRef.child(id).setValue(user);
     }
 
     @Override
@@ -444,5 +474,64 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public class GetCurrentVersion extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                Document doc = Jsoup.connect(urlOfApp).get();
+                latestVersion = doc.getElementsByAttributeValue
+                        ("itemprop", "softwareVersion").first().text();
+            } catch (Exception e) {
+
+            }
+            return null;
+        }
+
+        //TODO: Remove isNetConnected before release
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (!(currentVersion.equalsIgnoreCase(latestVersion) || latestVersion == null))
+                showUpdateDialog();
+//            else {
+////                String[] PERMISSIONS = {Manifest.permission.READ_CONTACTS,
+////                        Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS,
+////                        Manifest.permission.GET_ACCOUNTS, Manifest.permission.READ_PHONE_STATE};
+////
+////                if (!hasPermissions(getApplicationContext(), PERMISSIONS)) {
+////                    ActivityCompat.requestPermissions(getParent(), PERMISSIONS, REQUEST_ID_MULTIPLE_PERMISSIONS);
+////                }
+////                else
+//                splashThread.start();
+//            }
+            super.onPostExecute(aVoid);
+
+        }
+    }
+    private void showUpdateDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Update For Different Shopping Experience");
+        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
+                        ("market://details?id=com.shopearn")));
+                finish();
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setCancelable(false);
+        dialog = builder.show();
     }
 }
