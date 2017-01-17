@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "580120688305-34d8jahfughb7624sb57t7k1mp1539gt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shopearn",
+            "certificate_hash": "BE77160AF29A1554BD60A85F6F3584B78219182B"
+          }
+        },
+        {
           "client_id": "580120688305-e9s1afit1kmt5aui48m1bn9njadrbakl.apps.googleusercontent.com",
           "client_type": 3
         },
