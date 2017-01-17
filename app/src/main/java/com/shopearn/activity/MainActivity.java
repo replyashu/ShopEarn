@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -270,7 +271,9 @@ public class MainActivity extends AppCompatActivity
         // Get a reference to the todoItems child items it the database
         myRef = database.getReference("users/");
 
-        String id = AppController.getInstance().getAndroidId();
+//        String id = AppController.getInstance().getAndroidId();
+        String id = Settings.Secure.getString(getApplication().getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
         User user = new User();
 

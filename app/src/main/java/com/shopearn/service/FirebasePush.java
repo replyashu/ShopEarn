@@ -1,9 +1,8 @@
-package com.shopearn.receiver;
+package com.shopearn.service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,72 +13,33 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.shopearn.R;
 import com.shopearn.activity.MainActivity;
 import com.shopearn.global.AppController;
-import com.shopearn.global.ContainerHolderSingleton;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.tagmanager.Container;
-import com.google.android.gms.tagmanager.ContainerHolder;
-import com.google.android.gms.tagmanager.TagManager;
-
-import java.util.concurrent.TimeUnit;
 
 /**
- * Created by apple on 16/01/17.
+ * Created by apple on 17/01/17.
  */
 
-public class PushReceiver extends BroadcastReceiver {
+public class FirebasePush extends FirebaseMessagingService {
+
+    private static final String TAG = "FCM Service";
+    private String pushText;
 
     private static int i  ;
-    private static final String CONTAINER_ID = "GTM-NB8JXWG";
-    //  private static final String CONTAINER_ID = "GTM-K8XVZX";
-    private String title = "";
-    private String content = "";
-    private String pushText = "";
+
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-            if(AppController.getInstance().isInternetOn())
-                refreshTagManager(context);
-    }
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        // TODO: Handle FCM messages here.
+        // If the application is in the foreground handle both data and notification messages here.
+        // Also if you intend on generating your own notifications as a result of a received FCM
+        // message, here is where that should be initiated.
+        pushText = remoteMessage.getNotification().getBody();
 
-    private void refreshTagManager(final Context context){
-
-
-        TagManager tagManager = TagManager.getInstance(context);
-        tagManager.setVerboseLoggingEnabled(true);
-
-        com.google.android.gms.common.api.PendingResult<ContainerHolder> pending = tagManager.loadContainerPreferNonDefault(
-                CONTAINER_ID,
-                R.raw.gtm_analytics
-        );
-
-        pending.setResultCallback(new ResultCallback<ContainerHolder>() {
-            @Override
-            public void onResult(ContainerHolder containerHolder) {
-                ContainerHolderSingleton.setContainerHolder(containerHolder);
-                final Container container = containerHolder.getContainer();
-
-                containerHolder.refresh();
-                title = container.getString("title");
-                content = container.getString("url");
-                pushText = container.getString("text");
-
-                Log.d("title" ,"titl" + title);
-                sendNotification(context, title, content);
-
-                if (!containerHolder.getStatus().isSuccess()) {
-                    Log.e("IL", "failure loading container");
-                    return;
-                }
-
-                ContainerHolderSingleton.setContainerHolder(containerHolder);
-                ContainerLoadedCallback.registerCallbacksForContainer(container);
-                containerHolder.setContainerAvailableListener(new ContainerLoadedCallback());
-            }
-        }, 2, TimeUnit.SECONDS);
-
+        sendNotification(getApplicationContext(),remoteMessage.getNotification().getTitle(), remoteMessage.getData().get("url"));
     }
 
     private void sendNotification(Context context, String title , String content){
@@ -150,18 +110,4 @@ public class PushReceiver extends BroadcastReceiver {
 // mId allows you to update the notification later on.
         mNotificationManager.notify(i, builder.build());
     }
-
-    private static class ContainerLoadedCallback implements ContainerHolder.ContainerAvailableListener {
-        @Override
-        public void onContainerAvailable(ContainerHolder containerHolder, String containerVersion) {
-            // We load each container when it becomes available.
-            Container container = containerHolder.getContainer();
-            registerCallbacksForContainer(container);
-        }
-
-        public static void registerCallbacksForContainer(Container container) {
-            // Register two custom function call macros to the container.
-        }
-    }
-
 }

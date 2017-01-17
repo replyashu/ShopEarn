@@ -104,7 +104,6 @@ public class BannerAdapter extends PagerAdapter {
                                 throw new PackageManager.NameNotFoundException();
                             }
                             i.addCategory(Intent.ACTION_VIEW);
-
                             i.setData(Uri.parse(link + extraParams));
                             context.startActivity(i);
 
@@ -125,7 +124,7 @@ public class BannerAdapter extends PagerAdapter {
                     }
 
 
-                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+//                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
                 }
             });
             ((ViewPager) container).addView(itemView);

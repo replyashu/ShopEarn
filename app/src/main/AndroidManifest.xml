@@ -36,6 +36,13 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".service.FirebasePush">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService"/>
 
         <meta-data

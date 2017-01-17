@@ -83,6 +83,8 @@ public class EarnFragment extends Fragment implements View.OnClickListener{
         } else if(view.getId() == R.id.btnDashboard){
             Snackbar.make(view, "Its in progress, would be shown soon. All data is saved, See you soon here :)", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+
+
         }
     }
 
