@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class BannerAdapter extends PagerAdapter {
 
     private String email;
 
+    private String urlOfItemOnAmazonSite;
     public BannerAdapter(Context context, List<Banner> bannerList){
         this.context = context;
         this.banners = bannerList;
@@ -75,7 +77,7 @@ public class BannerAdapter extends PagerAdapter {
             final String imgUrl;
             final String link;
 
-            Uri uri = Uri.parse(banners.get(position).getImage());
+            final Uri uri = Uri.parse(banners.get(position).getImage());
 
             ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(uri).build();
             DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -115,10 +117,52 @@ public class BannerAdapter extends PagerAdapter {
                     else{
                         if(link.contains("amazon")) {
                             try {
+                                urlOfItemOnAmazonSite = "com.amazon.mobile.shopping://amazon.in/products/";
+
+
+                                if(link.contains("/aw/d")) {
+                                    int start = link.indexOf("/aw/d/");
+                                    urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + link.substring(start + 6, start + 16) +
+                                            AppController.getInstance().getAndroidId() + "~~email~~"+email + link.substring(40);
+                                }
+                                else if(link.contains("/gp/product")) {
+                                    int start = link.indexOf("/gp/product/");
+                                    urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + link.substring(start + 12, start + 22) +
+                                            AppController.getInstance().getAndroidId() + "~~email~~" +email;
+                                }
+
+                                else if(link.contains("/aw/ol")) {
+                                    int start = link.indexOf("/aw/ol/");
+                                    urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + link.substring(start + 7, start + 17) +
+                                            AppController.getInstance().getAndroidId() + "~~email~~" +email + link.substring(40);
+                                }
+
+                                else if(link.contains("/aw/gb") && !link.contains("gp/aw/gb")) {
+                                    int start = link.indexOf("/aw/gb/");
+                                    urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + link.substring(start + 6, start + 16) +
+                                            AppController.getInstance().getAndroidId() + "~~email~~" +email;
+                                }
+
+                                else if(link.contains("in/dp")) {
+                                    int start = link.indexOf("in/dp/");
+                                    urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + link.substring(start + 6, start + 16) +
+                                            AppController.getInstance().getAndroidId() + "~~email~~" +email + link.substring((start + 16));
+                                }
+
+                                else if(link.contains("/dp")) {
+                                    int start = link.indexOf("/dp/");
+
+                                    urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + link.substring(start + 4, start + 14) +
+                                            AppController.getInstance().getAndroidId() + "~~email~~" + email + link.substring((start + 14));
+                                }
+                                else
+                                    urlOfItemOnAmazonSite = link;
+
+                                Log.d("ammma", urlOfItemOnAmazonSite);
                                 context.startActivity(new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(link + AppController.getInstance().getAndroidId() + "~~email~~" + email)));
+                                        Uri.parse(urlOfItemOnAmazonSite)));
                             } catch (ActivityNotFoundException e) {
-//                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=in.amazon.mShop.android.shopping")));
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=in.amazon.mShop.android.shopping")));
                             }
                         }
                     }
@@ -130,7 +174,7 @@ public class BannerAdapter extends PagerAdapter {
             ((ViewPager) container).addView(itemView);
         }
         catch (Exception e){
-
+            Log.d("ammma", e.getMessage());
         }
 
         return itemView;

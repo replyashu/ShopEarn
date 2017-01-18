@@ -321,11 +321,53 @@ public class ShopFragment extends Fragment implements ShopAdapter.ViewHolder.Cli
     }
 
     private void forAmazon(String url){
-        urlOfItemOnAmazonSite = url + AppController.getInstance().getAndroidId() + "~~email~~" + email;
+//        urlOfItemOnAmazonSite = url + AppController.getInstance().getAndroidId() + "~~email~~" + email;
         try {
+
+            urlOfItemOnAmazonSite = "com.amazon.mobile.shopping://amazon.in/products/";
+
+
+            if(url.contains("/aw/d")) {
+                int start = url.indexOf("/aw/d/");
+                urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + url.substring(start + 6, start + 16) +
+                        AppController.getInstance().getAndroidId() + "~~email~~"+email + url.substring(40);
+            }
+            else if(url.contains("/gp/product")) {
+                int start = url.indexOf("/gp/product/");
+                urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + url.substring(start + 12, start + 22) +
+                        AppController.getInstance().getAndroidId() + "~~email~~" +email;
+            }
+
+            else if(url.contains("/aw/ol")) {
+                int start = url.indexOf("/aw/ol/");
+                urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + url.substring(start + 7, start + 17) +
+                        AppController.getInstance().getAndroidId() + "~~email~~" +email + url.substring(40);
+            }
+
+            else if(url.contains("/aw/gb") && !url.contains("gp/aw/gb")) {
+                int start = url.indexOf("/aw/gb/");
+                urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + url.substring(start + 6, start + 16) +
+                        AppController.getInstance().getAndroidId() + "~~email~~" +email;
+            }
+
+            else if(url.contains("in/dp")) {
+                int start = url.indexOf("in/dp/");
+                urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + url.substring(start + 6, start + 16) +
+                        AppController.getInstance().getAndroidId() + "~~email~~" +email + url.substring((start + 16));
+            }
+
+            else if(url.contains("/dp")) {
+                int start = url.indexOf("/dp/");
+
+                urlOfItemOnAmazonSite = urlOfItemOnAmazonSite + url.substring(start + 4, start + 14) +
+                        AppController.getInstance().getAndroidId() + "~~email~~" + email + url.substring((start + 14));
+            }
+            else
+                urlOfItemOnAmazonSite = url;
+
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlOfItemOnAmazonSite)));
         } catch (ActivityNotFoundException e) {
-//            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=in.amazon.mShop.android.shopping")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=in.amazon.mShop.android.shopping")));
         }
     }
 
