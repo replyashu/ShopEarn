@@ -168,8 +168,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
-        else
+        else {
             editor.putString("emailread", getUserName()).commit();
+            sendValueToFirebase();
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

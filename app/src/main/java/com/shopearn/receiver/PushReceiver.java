@@ -125,8 +125,7 @@ public class PushReceiver extends BroadcastReceiver {
                         Uri.parse("http://affiliate.flipkart.com/install-app?affid=ashuinbit"+ extraParams));
 
                 startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://affiliate.flipkart.com/install-app?affid=ashuinbit"+ extraParams)));
+                context.startActivity(startIntent);
             }
         }
         else{
