@@ -116,10 +116,15 @@ public class PushReceiver extends BroadcastReceiver {
                     throw new PackageManager.NameNotFoundException();
                 }
                 i.addCategory(Intent.ACTION_VIEW);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.setData(Uri.parse(content + extraParams));
                 resultIntent = i;
 
             } catch (PackageManager.NameNotFoundException e) {
+                Intent startIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://affiliate.flipkart.com/install-app?affid=ashuinbit"+ extraParams));
+
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://affiliate.flipkart.com/install-app?affid=ashuinbit"+ extraParams)));
             }
@@ -127,12 +132,31 @@ public class PushReceiver extends BroadcastReceiver {
         else{
             if(content.contains("amazon")) {
                 try {
-                    resultIntent.setData(Uri.parse(content + AppController.getInstance().getAndroidId() + "~~email~~" + email));
+                    Intent startIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(content + AppController.getInstance().getAndroidId() + "~~email~~" + email));
+
+                    startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    resultIntent.setData(Uri.parse(content + AppController.getInstance().getAndroidId() + "~~email~~" + email));
 //                    context.startActivity(new Intent(Intent.ACTION_VIEW,
 //                            Uri.parse(content + AppController.getInstance().getAndroidId() + "~~email~~" + email)));
+
+                    resultIntent = startIntent;
+
                 } catch (ActivityNotFoundException e) {
-//                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=in.amazon.mShop.android.shopping")));
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=in.amazon.mShop.android.shopping")));
                 }
+            }
+
+            else if(content.contains("snapdeal")){
+                Intent startIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(content+ "&aff_sub=" +
+                        email+ "&aff_sub2=abc" + AppController.getInstance().getAndroidId()));
+
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                resultIntent = startIntent;
+
+//                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url+ "&aff_sub=" +
+//                        email+ "&aff_sub2=abc" + AppController.getInstance().getAndroidId())));
             }
         }
 

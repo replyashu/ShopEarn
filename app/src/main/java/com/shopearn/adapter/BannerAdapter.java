@@ -165,6 +165,11 @@ public class BannerAdapter extends PagerAdapter {
                                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=in.amazon.mShop.android.shopping")));
                             }
                         }
+
+                        else if(link.contains("snapdeal")){
+                            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link+ "&aff_sub=" +
+                                    email+ "&aff_sub2=abc" + AppController.getInstance().getAndroidId())));
+                        }
                     }
 
 

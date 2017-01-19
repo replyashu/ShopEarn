@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -157,13 +158,18 @@ public class MainActivity extends AppCompatActivity
         ifsc = sp.getString("ifsc", "none");
 
         Log.d("emailread", sp.getString("emailread", "guest"));
-        if (!isReadAccountAllowed()) {
-            getAccountPermission();
-        } else {
-            if(!email.equalsIgnoreCase("guest")){
-                editor.putString("emailread", getUserName()).commit();
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (!isReadAccountAllowed()) {
+                getAccountPermission();
+            } else {
+                if (!email.equalsIgnoreCase("guest")) {
+                    editor.putString("emailread", getUserName()).commit();
+                }
             }
         }
+        else
+            editor.putString("emailread", getUserName()).commit();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -187,6 +193,8 @@ public class MainActivity extends AppCompatActivity
 
         Intent serviceIntent = new Intent(this, TimerService.class);
         startService(serviceIntent);
+
+
 
     }
 

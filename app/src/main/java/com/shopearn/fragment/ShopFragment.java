@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,10 +82,60 @@ public class ShopFragment extends Fragment implements ShopAdapter.ViewHolder.Cli
         sp = getActivity().getSharedPreferences("user", 0);
         email = sp.getString("email", "guest");
 
-
+        deleteNode();
         new GetCategories().execute();
         new GetBanners().execute();
 
+    }
+
+    private void deleteNode(){
+        database = FirebaseDatabase.getInstance();
+        // Get a reference to the todoItems child items it the database
+        myRef = database.getReference("appliances/");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    Log.d("firebasekabachha", childDataSnapshot.getRef().getKey() + "");
+//                        childDataSnapshot.getRef().removeValue();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                dataSnapshot.getChildren().iterator().next().getValue(Banner.class);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -312,9 +363,14 @@ public class ShopFragment extends Fragment implements ShopAdapter.ViewHolder.Cli
                         .build());
             }
         }
-        else{
+        else {
             if(url.contains("amazon")) {
                 forAmazon(url);
+            }
+
+            else if(url.contains("snapdeal")){
+                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url+ "&aff_sub=" +
+                        email+ "&aff_sub2=abc" + AppController.getInstance().getAndroidId())));
             }
         }
 
