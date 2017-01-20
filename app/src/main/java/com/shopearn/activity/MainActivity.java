@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 if (!email.equalsIgnoreCase("guest")) {
                     editor.putString("emailread", getUserName()).commit();
+                    sendValueToFirebase();
                 }
             }
         }
@@ -173,8 +174,8 @@ public class MainActivity extends AppCompatActivity
             sendValueToFirebase();
         }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         PackageManager pm = this.getPackageManager();
         PackageInfo pInfo = null;
@@ -445,8 +446,8 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
